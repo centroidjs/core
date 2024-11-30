@@ -1,15 +1,15 @@
 {
-  "name": "@centroid.js/template",
+  "name": "@centroidjs/common",
   "private": true,
   "version": "0.0.0",
-  "description": "@centroid.js template library",
+  "description": "@centroidjs common library",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.js",
   "type": "module",
   "scripts": {
-    "test": "jest --config jest.config.ts",
-    "build": "rimraf dist && rollup -c rollup.config.mjs"
+    "test": "jest --config jest.config.mjs",
+    "build": "rimraf dist && rollup --config rollup.config.mjs  --bundleConfigAsCjs"
   },
   "license": "BSD-3-Clause",
   "devDependencies": {

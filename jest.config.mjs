@@ -1,5 +1,6 @@
 import { pathsToModuleNameMapper } from 'ts-jest';
-import { compilerOptions } from './tsconfig.json';
+import typescriptConfig from './tsconfig.json' with { type: 'json' };
+const { compilerOptions } = typescriptConfig;
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
 export default {
   testEnvironment: "node",
