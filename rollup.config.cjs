@@ -1,5 +1,5 @@
-import typescript from "@rollup/plugin-typescript";
-import pkg from "./package.json" with { type: 'json' };
+const typescript = require("@rollup/plugin-typescript");
+const pkg = require("./package.json");
 
 const external = Object.keys(pkg.dependencies || {})
 
