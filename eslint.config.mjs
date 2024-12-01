@@ -17,7 +17,9 @@ const compat = new FlatCompat({
 // noinspection JSUnusedGlobalSymbols
 export default [{
     ignores: [
-        "**/dist/"
+        "**/dist/",
+        "jest.config.cjs",
+        "rollup.config.cjs",
     ],
 }, ...compat.extends(
     "plugin:@typescript-eslint/recommended",

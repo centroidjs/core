@@ -15,7 +15,10 @@
       "es2017",
       "dom"
     ],
-    "paths": {}
+    "paths": {
+      "@centroidjs/common/events": [ "events/src/index" ],
+      "@centroidjs/common": [ "src/index" ]
+    }
   },
   "exclude": [
     "node_modules",
