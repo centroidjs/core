@@ -1,15 +1,9 @@
-import { ServiceContainer, injectable } from '@centroidjs/common';
+import { ServiceContainer } from '@centroidjs/common';
 
-@injectable()
 class AnotherService {
-    public readonly enabled = true;
+    public counter = 0;
 }
 
-@injectable({
-    providers: [
-        AnotherService
-    ]
-})
 class Service1 {
     constructor(protected another: AnotherService) {
         //
@@ -17,24 +11,19 @@ class Service1 {
     getMessage() {
         return {
             message: 'Hello World',
-            enabled: this.another.enabled
+            counter: this.another.counter++
         };
     }
 }
 
-@injectable({
-    providers: [
-        AnotherService
-    ]
-})
 class Service2 extends Service1 {
     constructor(protected another: AnotherService) {
         super(another);
     }
     getMessage() {
         return {
-            message: 'Hello World',
-            enabled: this.another.enabled
+            message: 'Hello World!',
+            counter: this.another.counter++
         };
     }
 }
@@ -42,26 +31,31 @@ class Service2 extends Service1 {
 describe('ServiceContainer', () => {
     it('should create instance', () => {
         const container = new ServiceContainer();
-        container.use(Service1);
-        const service1 = container.get(Service1);
+        container.useService(Service1, {
+            useFactory: () => new Service1(new AnotherService())
+        });
+        const service1 = container.getService(Service1);
         expect(service1).toBeTruthy();
-        expect(container.has(Service1)).toBeTruthy();
+        expect(container.hasService(Service1)).toBeTruthy();
     });
 
     it('should use service', () => {
         const container = new ServiceContainer();
-        container.use(Service1, Service2);
-        const service = container.get(Service1);
+        container.useService(AnotherService);
+        container.useService(Service1, {
+            useFactory: (serviceContainer) => new Service2(serviceContainer.getService(AnotherService))
+        });
+        const service = container.getService(Service1);
         expect(service).toBeTruthy();
         expect(service.getMessage().message).toEqual('Hello World!');
     });
 
     it('should delete service', () => {
         const container = new ServiceContainer();
-        container.use(Service1, Service2);
-        const service = container.get(Service1);
+        container.useService(Service1);
+        const service = container.getService(Service1);
         expect(service).toBeTruthy();
-        container.delete(Service1);
-        expect(container.has(Service1)).toBeFalsy();
+        container.removeService(Service1);
+        expect(container.hasService(Service1)).toBeFalsy();
     });
 });
