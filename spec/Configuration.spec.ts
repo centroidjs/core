@@ -1,5 +1,10 @@
 import {ApplicationConfiguration} from '@centroidjs/common';
 
+interface LocaleConfigurationSettings {
+    locales: string[],
+    defaultLocale: string
+}
+
 describe('ApplicationConfiguration', () => {
     it('should create instance', () => {
        const configuration = new ApplicationConfiguration({
@@ -9,7 +14,8 @@ describe('ApplicationConfiguration', () => {
            }
        });
        expect(configuration).toBeTruthy();
-       expect(configuration.instant.settings?.locales).toBeTruthy();
-       expect(configuration.instant.settings?.defaultLocale).toEqual('en');
+       const applicationLocale = configuration.instant.settings as LocaleConfigurationSettings;
+       expect(applicationLocale?.locales).toBeTruthy();
+       expect(applicationLocale?.defaultLocale).toEqual('en');
     });
 });

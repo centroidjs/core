@@ -8,7 +8,7 @@ interface ServiceConfiguration {
 interface ApplicationConfigurationSource {
     [key: string]: unknown,
     services?: ServiceConfiguration[],
-    settings?: Record<string, unknown>
+    settings?: unknown
 }
 
 interface ApplicationConfigurationBase extends ServiceContainerBase{
