@@ -1,4 +1,4 @@
-import { ServiceContainer } from '@centroidjs/common';
+import {ServiceContainer, ServiceEventArgs} from '@centroidjs/common';
 
 class AnotherService {
     public counter = 0;
@@ -31,6 +31,10 @@ class Service2 extends Service1 {
 describe('ServiceContainer', () => {
     it('should create instance', () => {
         const container = new ServiceContainer();
+        const onLoading = (event: ServiceEventArgs) => {
+            expect(event.target).toEqual(container);
+        }
+        container.serviceLoad.subscribe(onLoading);
         container.useService(Service1, {
             useFactory: () => new Service1(new AnotherService())
         });
@@ -52,6 +56,10 @@ describe('ServiceContainer', () => {
 
     it('should delete service', () => {
         const container = new ServiceContainer();
+        const onUnloading = (event: ServiceEventArgs) => {
+            expect(event.target).toEqual(container);
+        };
+        container.serviceUnload.subscribe(onUnloading);
         container.useService(Service1);
         const service = container.getService(Service1);
         expect(service).toBeTruthy();

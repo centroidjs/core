@@ -1,9 +1,5 @@
-
-declare type ServiceConstructor<T> = new (...args: unknown[]) => T;
-
-declare type InjectableServiceConstructor<T> = new (container: ServiceContainer, ...args: unknown[]) => T;
-
-declare type ServiceFactory<T> = (container: ServiceContainer, ...args: unknown[]) => T;
+import {SyncSeriesEventEmitter} from '@themost/events';
+import {ServiceContainerBase, ServiceConstructor, ServiceFactory, ServiceEventArgs} from './ServiceContainerBase';
 
 /**
  * A container for managing application services.
@@ -11,10 +7,13 @@ declare type ServiceFactory<T> = (container: ServiceContainer, ...args: unknown[
  * @class ServiceContainer
  * @template T - The type of the service.
  */
-class ServiceContainer {
+class ServiceContainer implements ServiceContainerBase {
 
     protected readonly services = new Map<string, unknown>;
-    
+
+    public readonly serviceLoad = new SyncSeriesEventEmitter<ServiceEventArgs>();
+    public readonly serviceUnload = new SyncSeriesEventEmitter<ServiceEventArgs>();
+
     /**
      * Retrieves a service instance from the service container.
      *
@@ -45,7 +44,9 @@ class ServiceContainer {
      * @returns {boolean} - Returns `true` if the service was successfully removed, otherwise `false`.
      */
     public removeService<T>(serviceConstructor: ServiceConstructor<T>): boolean {
-        return this.services.delete(serviceConstructor.name);
+        const removed = this.services.delete(serviceConstructor.name);
+        this.serviceUnload.emit({ target: this, serviceType: serviceConstructor, instance: null });
+        return removed;
     }
 
     /**
@@ -63,22 +64,27 @@ class ServiceContainer {
         if (typeof strategyConstructor === 'function') {
             const strategy = new strategyConstructor(this);
             this.services.set(serviceConstructor.name, strategy);
+            this.serviceLoad.emit({ target: this, serviceType: serviceConstructor, instance: strategy });
             return this;
         }
         if (typeof strategyConstructor === 'object' && typeof strategyConstructor.useFactory === 'function') {
-            const strategy = strategyConstructor.useFactory(this);
-            this.services.set(serviceConstructor.name, strategy);
+            const factory = strategyConstructor.useFactory(this);
+            this.services.set(serviceConstructor.name, factory);
+            this.serviceLoad.emit({ target: this, serviceType: serviceConstructor, instance: factory });
             return this;
         }
-        this.services.set(serviceConstructor.name, new serviceConstructor(this));
+        const service = new serviceConstructor(this);
+        this.services.set(serviceConstructor.name, service);
+        this.serviceLoad.emit({ target: this, serviceType: serviceConstructor, instance: service });
         return this;
+    }
+
+    registerService<T>(serviceConstructor: ServiceConstructor<T>, strategyConstructor?: ServiceConstructor<T> | { useFactory: ServiceFactory<T>; }): this {
+        return this.useService(serviceConstructor, strategyConstructor);
     }
 
 }
 
 export {
-    ServiceConstructor,
-    InjectableServiceConstructor,
-    ServiceFactory,
     ServiceContainer
 }
