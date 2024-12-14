@@ -1,4 +1,4 @@
-import {ServiceContainer, ServiceEventArgs} from '@centroidjs/common';
+import {ServiceContainer, ServiceEventArgs} from '@centroidjs/core';
 
 class AnotherService {
     public counter = 0;

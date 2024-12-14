@@ -16,6 +16,9 @@
       "dom"
     ],
     "paths": {
+      "@centroidjs/core": [
+        "src/index.ts"
+      ]
     }
   },
   "exclude": [
