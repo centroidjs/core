@@ -17,7 +17,7 @@
     ],
     "paths": {
       "@centroidjs/core": [
-        "src/index.ts"
+        "src/index"
       ]
     }
   },
