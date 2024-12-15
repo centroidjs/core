@@ -16,8 +16,9 @@
       "dom"
     ],
     "paths": {
-      "@centroidjs/common/events": [ "events/src/index" ],
-      "@centroidjs/common": [ "src/index" ]
+      "@centroidjs/core": [
+        "src/index"
+      ]
     }
   },
   "exclude": [

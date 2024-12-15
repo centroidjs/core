@@ -1,5 +1,5 @@
 import {SyncSeriesEventEmitter} from '@themost/events';
-import {ServiceContainerBase, ServiceConstructor, ServiceFactory, ServiceEventArgs} from './ServiceContainerBase';
+import {ServiceContainerBase, ServiceConstructor, AnyServiceConstructor, ServiceFactory, ServiceEventArgs} from './ServiceContainerBase';
 
 /**
  * A container for managing application services.
@@ -21,7 +21,7 @@ class ServiceContainer implements ServiceContainerBase {
      * @param {ServiceConstructor<T>} [serviceConstructor] - The constructor of the service to retrieve.
      * @returns {T} The instance of the requested service.
      */
-    public getService<T>(serviceConstructor?: ServiceConstructor<T>): T {
+    public getService<T>(serviceConstructor?: ServiceConstructor<T> | AnyServiceConstructor<T>): T {
         return this.services.get(serviceConstructor.name) as T;
     }
 
@@ -32,7 +32,7 @@ class ServiceContainer implements ServiceContainerBase {
      * @param {ServiceConstructor<T>} serviceConstructor - The constructor of the service to check.
      * @returns {boolean} - Returns `true` if the service is registered, otherwise `false`.
      */
-    public hasService<T>(serviceConstructor: ServiceConstructor<T>): boolean {
+    public hasService<T>(serviceConstructor: ServiceConstructor<T> | AnyServiceConstructor<T>): boolean {
         return this.services.has(serviceConstructor.name);
     }
 

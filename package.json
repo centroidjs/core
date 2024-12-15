@@ -1,7 +1,7 @@
 {
-  "name": "@centroidjs/common",
+  "name": "@centroidjs/core",
   "version": "25.1.0",
-  "description": "@centroidjs common library",
+  "description": "centroidjs core library",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.js",

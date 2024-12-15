@@ -5,3 +5,4 @@ export * from './ApplicationConfigurationBase';
 export * from './ApplicationConfiguration';
 export * from './Application';
 export * from './Decorators';
+export * from './ApplicationService';

@@ -1,6 +1,6 @@
-import {ApplicationConfiguration} from '@centroidjs/common';
+import {ApplicationConfiguration} from '@centroidjs/core';
 
-interface LocaleConfigurationSettings {
+interface LocaleConfigurationSettings extends Record<string, unknown> {
     locales: string[],
     defaultLocale: string
 }
