@@ -1,13 +1,14 @@
 import {SyncSeriesEventEmitter} from '@themost/events';
 
 declare type ServiceConstructor<T> = new (...args: unknown[]) => T;
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 declare type AnyServiceConstructor<T> = Function & { prototype: T }
 declare type InjectableServiceConstructor<T> = new (container: ServiceContainerBase, ...args: unknown[]) => T;
 declare type ServiceFactory<T> = (container: ServiceContainerBase, ...args: unknown[]) => T;
 
 declare interface ServiceEventArgs {
     target: ServiceContainerBase;
-    serviceType: new (...args: unknown[]) => unknown;
+    serviceType:  ServiceConstructor<unknown> | AnyServiceConstructor<unknown>;
     instance: unknown;
 }
 

@@ -5,8 +5,7 @@ interface ServiceConfiguration {
     strategyType?: new (...args: unknown[]) => unknown
 }
 
-interface ApplicationConfigurationSource {
-    [key: string]: unknown,
+interface ApplicationConfigurationSource extends Record<string, unknown> {
     services?: ServiceConfiguration[],
     settings?: Record<string, unknown>
 }
